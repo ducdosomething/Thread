@@ -1,32 +1,39 @@
 package NumberGenerator2;
 
-public class NumberGenerator implements Runnable {
+class OddThread extends Thread {
     @Override
     public void run() {
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Thread: " + Thread.currentThread().getName() +
-                    " - Number: " + i + " - HashCode: " + this.hashCode());
-
+        for (int i = 1; i <= 10; i += 2) {
+            System.out.println("OddThread: " + i);
             try {
-                Thread.sleep(500);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+}
 
+class EvenThread extends Thread {
+    @Override
+    public void run() {
+        for (int i = 2; i <= 10; i += 2) {
+            System.out.println("EvenThread: " + i);
+            try {
+                Thread.sleep(15);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+public class NumberGenerator {
     public static void main(String[] args) {
-        NumberGenerator generator1 = new NumberGenerator();
-        NumberGenerator generator2 = new NumberGenerator();
+        OddThread oddThread = new OddThread();
+        EvenThread evenThread = new EvenThread();
 
-        Thread thread1 = new Thread(generator1);
-        Thread thread2 = new Thread(generator2);
-
-        // Set priority for threads
-        thread1.setPriority(Thread.MAX_PRIORITY);
-        thread2.setPriority(Thread.MIN_PRIORITY);
-
-        thread1.start();
-        thread2.start();
+        oddThread.start();
+        evenThread.start();
     }
 }
